@@ -1,0 +1,11 @@
+nextflow run ../PhyloMagnet/main.nf \
+            --lineage "Thermobacillus" \
+            -with-singularity  ../PhyloMagnet.simg \
+            -resume \
+            --align_method 'mafft-einsi' \
+            --phylo_method 'iqtree' \
+            --cpus 32 \
+            -qs 6 \
+            --fastq "fastq/*" \
+            --reference_packages "../rp16_rpkg/*" \
+            --megan_vmoptions "../MEGAN.vmoptions"
