@@ -1,23 +1,22 @@
 Python script to download sra files from ENA and subsequently convert them to fastq files (basically taken from the template used in Phylomagnet)
-============
-```
+```bash
 donwnload_fastq(){
   python3 <<<"""
 import requests
 import shutil
 import subprocess
 
-acc = "$1"
-url = ""
+acc = '$1'
+url = ''
 if len(acc) == 9:
-    url = "http://ftp.sra.ebi.ac.uk/vol1/{}/{}/{}".format(acc[0:3].lower(), acc[0:6], acc)
+    url = 'http://ftp.sra.ebi.ac.uk/vol1/{}/{}/{}'.format(acc[0:3].lower(), acc[0:6], acc)
 elif len(acc) == 10:
-    url = "http://ftp.sra.ebi.ac.uk/vol1/{}/{}/{}/{}".format(acc[0:3].lower(), acc[0:6], "00" + acc[-1], acc)
+    url = 'http://ftp.sra.ebi.ac.uk/vol1/{}/{}/{}/{}'.format(acc[0:3].lower(), acc[0:6], "00" + acc[-1], acc)
 elif len(acc) == 11:
-    url = "http://ftp.sra.ebi.ac.uk/vol1/{}/{}/{}/{}".format(acc[0:3].lower(), acc[0:6], "0" + acc[-2:], acc)
+    url = 'http://ftp.sra.ebi.ac.uk/vol1/{}/{}/{}/{}'.format(acc[0:3].lower(), acc[0:6], "0" + acc[-2:], acc)
 
 r = requests.get(url, stream=True)
-with open("$1.sra", 'wb') as f:
+with open('$1.sra', 'wb') as f:
       shutil.copyfileobj(r.raw, f)
   """
   fastq-dump --gzip --readids --split-spot --skip-technical --clip $1.sra
@@ -27,21 +26,21 @@ with open("$1.sra", 'wb') as f:
 MBARC-26
 ========
 Download MBARC-26 Illumina metagenomic dataset from ENA
-```
+```bash
 mkdir MBARC/fastq
 cd MBARC/fastq
 donwnload_fastq SRR3656745
 ```
 Subsample 1% and 10% from the MBARC-26 data for benchmarking
-```
+```bash
 seqtk sample -s11 <(gunzip -c SRR3656745.fastq.gz) 0.01 | pigz -9 > SRR3656745.1perc.fastq.gz
 seqtk sample -s11 <(gunzip -c SRR3656745.fastq.gz) 0.1 | pigz -9 > SRR3656745.10perc.fastq.gz
 ```
 
-TARA Oceans
+Tara Oceans
 ===========
 Download Tara Oceans metagenomic data from ENA
-```
+```bash
 mkdir Tara_Southern_Ocean/fastq
 cd Tara_Southern_Ocean/fastq
 
@@ -52,8 +51,8 @@ done
 
 Coral Bleaching
 ===============
-Download Coral Bleaching metatranscriptome dataset from ENA
-```
+Download Coral Bleaching metatranscriptomic data from ENA
+```bash
 mkdir Tara_Southern_Ocean/fastq
 cd Tara_Southern_Ocean/fastq
 

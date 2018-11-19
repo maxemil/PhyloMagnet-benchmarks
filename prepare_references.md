@@ -31,24 +31,21 @@ Create the extended references including all genera included in the MBARC-26 dat
 Download the genomes of relatives of the MBARC species, annotate each sequence with the taxid
 ```bash
 download(){
-  while read id;
+  while read id tax;
   do
     ass=$(wget -q "https://www.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=assembly&term="$id -O - | ./xml_grep -cond Id --text_only)
     ftp=$(wget -q "https://www.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=assembly&id="$ass -O - | ./xml_grep -cond FtpPath_GenBank --text_only)
     base=$(basename $ftp)
     wget -q $ftp/$base"_protein.faa.gz" -O $id.faa.gz
     wget -q $ftp/$base"_genomic.fna.gz" -O $id.fna.gz
+    zcat "$f.faa.gz" | sed 's/>/>'"$tax"'\./g' | gzip > "$f.labelled.faa.gz" ;
   done < $1
 
-  while read f i;
-  do
-    zcat $f | sed 's/>/>'"$i"'\./g' | gzip > ${f%%.faa.gz}.labelled.faa.gz ;
-  done < $2
   zcat *.labelled.faa.gz | gzip > all_proteomes.faa.gz
 }
 
 cd MBARC/genomes_relatives
-download accessions.txt taxids.txt
+download taxids.txt
 cd ../..
 ```
 
@@ -146,34 +143,3 @@ nextflow run $PhyloMagnet/main.nf \
 
 bash $PhyloMagnet/utils/make_reference_packages.sh chloroplast_references/ chloroplast_rpkgs/
 ```
-
-
-
-<!-- ####################
-# get full length sequences from genomes
-####################
-cd MBARC/genomes
-download accessions.txt taxids.txt
-cd ../..
-
-mkdir MBARC/genomes_rp16_genes
-
-for hmm in rp16_hmms/COG*[0-9].hmm;
-do
-  hmmsearch -T 35 --tblout MBARC/genomes_rp16_genes/$(basename ${hmm%%.hmm}).out $hmm MBARC/genomes/all_proteomes.faa.gz;
-  grep -v "^#" MBARC/genomes_rp16_genes/$(basename ${hmm%%.hmm}).out | awk '{print $1}' | esl-sfetch -f MBARC/genomes/all_proteomes.faa.gz - > MBARC/genomes_rp16_genes/$(basename ${hmm%%.hmm}).hits.fasta ;
-done
-
-
-
-
-singularity exec -B $PWD:$PWD graftM.img graftM graft \
-                                            --forward SRR3656745_1.fastq.gz \
-                                            --reverse SRR3656745_2.fastq.gz \
-                                            --graftm_package rp16_added_gpkg/COG0051_add.gpkg \
-                                            --input_sequence_type nucleotide \
-                                            --search_method diamond \
-                                            --assignment_method pplacer \
-                                            --threads 32 \
-                                            --verbosity 5 \
-                                            --log SRR3656745-COG0051_add.log -->
