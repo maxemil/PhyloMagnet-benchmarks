@@ -1,5 +1,6 @@
 Prepare initial rp16 references
 -------
+Download initial references from EggNOG and create multiple sequence alignments and trees. Save the reference packages in compressed form in `rp16_rpkg`.
 ```bash
 PhyloMagnet=/path/to/PhyloMagnet/
 
@@ -14,7 +15,6 @@ nextflow run $PhyloMagnet/main.nf \
 
 bash $PhyloMagnet/utils/make_reference_packages.sh rp16_references rp16_rpkg
 ```
-
 
 Create HMM models for the alignments of reference sequences to search additional genomes and complement the reference OGs.
 ```bash
@@ -33,8 +33,8 @@ Download the genomes of relatives of the MBARC species, annotate each sequence w
 download(){
   while read id tax;
   do
-    ass=$(wget -q "https://www.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=assembly&term="$id -O - | ./xml_grep -cond Id --text_only)
-    ftp=$(wget -q "https://www.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=assembly&id="$ass -O - | ./xml_grep -cond FtpPath_GenBank --text_only)
+    ass=$(wget -q "https://www.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=assembly&term="$id -O - | xml_grep -cond Id --text_only)
+    ftp=$(wget -q "https://www.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=assembly&id="$ass -O - | xml_grep -cond FtpPath_GenBank --text_only)
     base=$(basename $ftp)
     wget -q $ftp/$base"_protein.faa.gz" -O $id.faa.gz
     wget -q $ftp/$base"_genomic.fna.gz" -O $id.fna.gz
