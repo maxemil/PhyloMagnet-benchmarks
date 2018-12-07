@@ -2,10 +2,10 @@ Prepare initial rp16 references
 -------
 Download initial references from EggNOG and create multiple sequence alignments and trees. Save the reference packages in compressed form in `rp16_rpkg`.
 ```bash
-PhyloMagnet=/path/to/PhyloMagnet/
+singularity pull --name PhyloMagnet.simg shub://maxemil/PhyloMagnet:latest
 
-nextflow run $PhyloMagnet/main.nf \
-            -with-singularity  $PhyloMagnet/PhyloMagnet.simg \
+nextflow run maxemil/PhyloMagnet \
+            -with-singularity  PhyloMagnet.simg \
             --align_method 'mafft-einsi' \
             --phylo_method 'iqtree' \
             --cpus 36 \
@@ -13,7 +13,7 @@ nextflow run $PhyloMagnet/main.nf \
             --reference_classes MBARC/eggnog_rp16.txt
             --reference_dir rp16_references
 
-bash $PhyloMagnet/utils/make_reference_packages.sh rp16_references rp16_rpkg
+bash $HOME/.nextflow/assets/maxemil/PhyloMagnet/utils/make_reference_packages.sh rp16_references rp16_rpkg
 ```
 
 Create HMM models for the alignments of reference sequences to search additional genomes and complement the reference OGs.
@@ -67,7 +67,7 @@ done
 
 Use PhyloMagnet to create alignments and trees for each of the extended reference set. Package the files into reference packages (rpkg).
 ```bash
-nextflow run $PhyloMagnet/main.nf \
+nextflow run maxemil/PhyloMagnet \
             -with-singularity $PhyloMagnet/PhyloMagnet.simg \
             --align_method 'mafft-einsi' \
             --phylo_method 'iqtree' \
@@ -76,7 +76,7 @@ nextflow run $PhyloMagnet/main.nf \
             --local_ref "rp16_added_fasta/*_add.fasta" \
             --reference_dir rp16_added_references -resume
 
-bash $PhyloMagnet/utils/make_reference_packages.sh rp16_added_references rp16_added_rpkg
+bash $HOME/.nextflow/assets/maxemil/PhyloMagnet/utils/make_reference_packages.sh rp16_added_references rp16_added_rpkg
 ```
 
 Analogous to the rpkgs, create gpkgs to be used with graftM
@@ -132,7 +132,7 @@ cd ..
 
 Reconstruct alignmnents and trees for chloroplast genes and package them into rpkgs
 ```bash
-nextflow run $PhyloMagnet/main.nf \
+nextflow run maxemil/PhyloMagnet/main.nf \
             -with-singularity /local/two/Software/PhyloMagnet/PhyloMagnet.simg \
             --cpus 40 \
             --local_ref "chloroplast_references_uniprot/*.fasta" \
@@ -141,5 +141,5 @@ nextflow run $PhyloMagnet/main.nf \
             --align_method 'mafft-einsi' \
             --reference_dir 'chloroplast_references'
 
-bash $PhyloMagnet/utils/make_reference_packages.sh chloroplast_references/ chloroplast_rpkgs/
+bash $HOME/.nextflow/assets/maxemil/PhyloMagnet/utils/make_reference_packages.sh chloroplast_references/ chloroplast_rpkgs/
 ```

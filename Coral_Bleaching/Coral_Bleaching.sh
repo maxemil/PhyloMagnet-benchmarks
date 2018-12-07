@@ -1,8 +1,8 @@
-nextflow run /local/two/Software/PhyloMagnet/main.nf \
+nextflow run maxemil/PhyloMagnet \
             --lineage "family","Dinophyceae" \
-            -with-singularity  /local/two/Software/PhyloMagnet/PhyloMagnet.simg \
-            --cpus 44 \
-            --reference_packages "rpkgs/*" \
+            -with-singularity  ../PhyloMagnet.simg \
+            --cpus 40 \
+            --reference_packages "../chloroplast_rpkgs/*" \
             --megan_vmoptions "../MEGAN.vmoptions" \
-            --fastq "fastq/PRJNA*" \
+            --fastq "fastq/PRJNA377366.fastq.gz" \
             -with-report "Coral_Bleaching.html"

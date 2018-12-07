@@ -8,7 +8,11 @@ with open('$1.quer.aln', 'w') as out:
         SeqIO.write(rec, out, 'fasta')
 """
 }
-
+mkdir transcriptome
+cd transcriptome
+wget https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE97888&format=file&file=GSE97888%5FMetatranscriptome%5Fqualityfiltered%2Efasta%2Egz
+gunzip GSE97888_Metatranscriptome_qualityfiltered.fasta.gz
+cd ..
 makeblastdb -in transcriptome/GSE97888_Metatranscriptome_qualityfiltered.fasta -out transcriptome/GSE97888_Metatranscriptome_qualityfiltered.db -dbtype nucl
 mkdir place_transcripts
 cd place_transcripts
@@ -18,7 +22,8 @@ do
   gene=${dir#../references/}
   gene=${gene%/}
   tblastn -db ../transcriptome/GSE97888_Metatranscriptome_qualityfiltered.db -num_threads 30 -query $dir$gene.unique.fasta -evalue 1e-15 -outfmt '6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send sframe evalue bitscore' -out $gene.tblastn
-  anapy3 /local/two/Software/misc-scripts/get_blast_hsp.py -b $gene.tblastn -f ../transcriptome/GSE97888_Metatranscriptome_qualityfiltered.fasta -o $gene.hits -n qseqid sseqid pident length mismatch gapopen qstart qend sstart send sframe evalue bitscore
+  python3 ../../scripts/get_blast_hsp.py -b $gene.tblastn -f ../transcriptome/GSE97888_Metatranscriptome_qualityfiltered.fasta -o $gene.hits --translate -n qseqid sseqid pident length mismatch gapopen qstart qend sstart send sframe evalue bitscore
+  python3 ../../scripts/get_blast_hsp.py -b $gene.tblastn -f ../transcriptome/GSE97888_Metatranscriptome_qualityfiltered.fasta -o $gene.nucl.hits -n qseqid sseqid pident length mismatch gapopen qstart qend sstart send sframe evalue bitscore
   trimal -in $dir$gene.unique.aln -out $gene.ref.phy -phylip
   singularity exec -B /local:/local /local/two/Software/PhyloMagnet/PhyloMagnet.simg papara -t $dir$gene.treefile -s $gene.ref.phy -q $gene.hits -a -n $gene -r
   trimal -in papara_alignment.$gene -out $gene.refquer.aln -fasta
