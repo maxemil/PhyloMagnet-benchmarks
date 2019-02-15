@@ -6,7 +6,7 @@ Compare PhyloMagnet results to GraftM results, see file `MBARC/genomes_mapped.tx
 
 Tara Oceans
 ----------
-```
+```bash
 cd Tara_Southern_Ocean
 wget https://ndownloader.figshare.com/files/8243654 -O NON_REDUNDANT_MAGs.tar.gz
 tar -xzf NON_REDUNDANT_MAGs.tar.gz
@@ -14,7 +14,7 @@ tar -xzf NON_REDUNDANT_MAGs.tar.gz
 
 ```
 Compute taxonomic labels for additional genome bins using sourmash (download the database from sourmash's website https://sourmash.readthedocs.io/en/latest/databases.html)q
-```
+```bash
 cd sourmash
 wget https://osf.io/nemkw/download -O t-genbank-k51.lca.json.gz
 nextflow run sourmash.nf --genomes ../NON_REDUNDANT_MAGs/* --reference genbank-k51.lca.json.gz --outdir signatures-MAGS -qs 35
@@ -24,7 +24,7 @@ cd ..
 Coral Bleaching
 ---------------
 
-```
+```bash
 mkdir Coral_Bleaching/transcriptome
 cd Coral_Bleaching/transcriptome
 
@@ -40,14 +40,14 @@ with open('$1.quer.aln', 'w') as out:
 }
 ```
 Download the metatranscriptomic assembly from GEO database. prepare blast database
-```
+```bash
 wget https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE97888&format=file&file=GSE97888%5FMetatranscriptome%5Fqualityfiltered%2Efasta%2Egz
 gunzip GSE97888_Metatranscriptome_qualityfiltered.fasta.gz
 makeblastdb -in GSE97888_Metatranscriptome_qualityfiltered.fasta -out GSE97888_Metatranscriptome_qualityfiltered.db -dbtype nucl
 
 ```
 For each reference OG, identify homologous transcripts and place them onto the ref tree.
-```
+```bash
 cd ..
 mkdir place_transcripts
 cd place_transcripts

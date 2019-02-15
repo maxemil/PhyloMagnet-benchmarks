@@ -28,13 +28,26 @@ Run PhyloMagnet on the Tara Oceans metagenomic dataset
 Evaluate Benchmarks
 ================
 Fig 2:
-```{include=Fig2.py}
+-----
+```{ .python include=Fig2.py}
 ```
 
+Fig 3:
+-----
+This figure is simply the heatmap taken from the ouput of the Tara oceans benchmark
+(`Tara_Southern_Ocean/queries/decision_heatmap.pdf`), added with a 'taxonomic tree' as it can be found on ncbi.
+
+Fig 4:
+-----
+These are the two trees `Coral_Bleaching/queries/PRJNA377366/PRJNA377366-psbb.newick` and `Coral_Bleaching/place_transcripts/psbb.newick` aligned to each other so as to be able to compare the placements
+
 Fig S1:
-```{include=FigS1.py}
+-----
+
+```{ .python include=FigS1.py}
 ```
 
 Fig S2:
-```{include=FigS2.py}
+-----
+```{ .python include=FigS2.py}
 ```

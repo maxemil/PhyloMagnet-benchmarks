@@ -1,6 +1,6 @@
 To execute the different parts of the benchmarks (most results file are included in this repository), use these commands:
 
-```
+```bash
 sudo singularity build benchmark.simg Singularity
 cd GraftM
 sudo singularity build graftm.simg Singularity.graftM
@@ -24,7 +24,7 @@ python3 FigS2.py
 ```
 
 If you want to create a PDF with all the commands and comments:
-```
+```bash
 pandoc prepare_references.md \
         prepare_queries.md \
         prepare_benchmarks.md \
