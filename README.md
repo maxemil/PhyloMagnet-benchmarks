@@ -28,7 +28,9 @@ If you want to create a PDF with all the commands and comments:
 pandoc prepare_references.md \
         prepare_queries.md \
         prepare_benchmarks.md \
+        benchmarks.md \
         bibliography.md \
         --listings -H pandoc-listings-setup.tex \
+        --filter pandoc-include-code \
         -o supplement.pdf
 ```
