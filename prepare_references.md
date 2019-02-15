@@ -1,3 +1,5 @@
+Download and prepare Reference sequences
+====================
 Prepare initial rp16 references
 -------
 Download initial references from EggNOG and create multiple sequence alignments and trees. Save the reference packages in compressed form in `rp16_rpkg`.
@@ -13,7 +15,8 @@ nextflow run maxemil/PhyloMagnet \
             --reference_classes MBARC/eggnog_rp16.txt
             --reference_dir rp16_references
 
-bash $HOME/.nextflow/assets/maxemil/PhyloMagnet/utils/make_reference_packages.sh rp16_references rp16_rpkg
+bash $HOME/.nextflow/assets/maxemil/PhyloMagnet/utils/make_reference_packages.sh \
+            rp16_references rp16_rpkg
 ```
 
 Create HMM models for the alignments of reference sequences to search additional genomes and complement the reference OGs.
@@ -26,7 +29,7 @@ do
 done
 ```
 
-Create the extended references including all genera included in the MBARC-26 dataset
+Create the extended rp16 references including all genera included in the MBARC-26 dataset
 -------
 Download the genomes of relatives of the MBARC species, annotate each sequence with the taxid
 ```bash
@@ -68,7 +71,7 @@ done
 Use PhyloMagnet to create alignments and trees for each of the extended reference set. Package the files into reference packages (rpkg).
 ```bash
 nextflow run maxemil/PhyloMagnet \
-            -with-singularity $PhyloMagnet/PhyloMagnet.simg \
+            -with-singularity PhyloMagnet.simg \
             --align_method 'mafft-einsi' \
             --phylo_method 'iqtree' \
             --cpus 36 \
@@ -95,8 +98,9 @@ do
 done
 ```
 
-Get and prepare Chloroplast gene references from uniprot
+Get and prepare Chloroplast gene references from uniprot.
 --------
+Print the FASTA header in the format TAXID.ACCESSION, similar to how EggNOG references are formatted.
 ```bash
 clean_headers(){
   python3 <<<"""
@@ -124,7 +128,9 @@ cd chloroplast_references_uniprot
 
 for gene in "atpA" "atpB" "petB" "petD" "psaA" "psaB" "psbA" "psbB" "psbC" "psbD" "psbE" "psbI";
 do
-  wget "https://www.uniprot.org/uniprot/?query=gene%3A$gene+(reviewed%3Ayes+OR+dinophyceae)+(chloroplast+OR+plastid)&format=fasta" -O "$gene.fasta"
+  wget \
+"https://www.uniprot.org/uniprot/?query=gene%3A$gene+(reviewed%3Ayes+OR+dinophyceae)+(chloroplast+OR+plastid)&format=fasta" \
+-O "$gene.fasta"
 done
 clean_headers
 cd ..
@@ -132,8 +138,8 @@ cd ..
 
 Reconstruct alignmnents and trees for chloroplast genes and package them into rpkgs
 ```bash
-nextflow run maxemil/PhyloMagnet/main.nf \
-            -with-singularity /local/two/Software/PhyloMagnet/PhyloMagnet.simg \
+nextflow run maxemil/PhyloMagnet \
+            -with-singularity PhyloMagnet.simg \
             --cpus 40 \
             --local_ref "chloroplast_references_uniprot/*.fasta" \
             --megan_vmoptions "../MEGAN.vmoptions" \
@@ -141,5 +147,6 @@ nextflow run maxemil/PhyloMagnet/main.nf \
             --align_method 'mafft-einsi' \
             --reference_dir 'chloroplast_references'
 
-bash $HOME/.nextflow/assets/maxemil/PhyloMagnet/utils/make_reference_packages.sh chloroplast_references/ chloroplast_rpkgs/
+bash $HOME/.nextflow/assets/maxemil/PhyloMagnet/utils/make_reference_packages.sh \
+            chloroplast_references/ chloroplast_rpkgs/
 ```

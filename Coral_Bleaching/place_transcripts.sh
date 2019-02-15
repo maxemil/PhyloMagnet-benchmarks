@@ -24,7 +24,7 @@ do
   tblastn -db ../transcriptome/GSE97888_Metatranscriptome_qualityfiltered.db -num_threads 30 -query $dir$gene.unique.fasta -evalue 1e-15 -outfmt '6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send sframe evalue bitscore' -out $gene.tblastn
   python3 ../../scripts/get_blast_hsp.py -b $gene.tblastn -f ../transcriptome/GSE97888_Metatranscriptome_qualityfiltered.fasta -o $gene.hits --translate -n qseqid sseqid pident length mismatch gapopen qstart qend sstart send sframe evalue bitscore
   python3 ../../scripts/get_blast_hsp.py -b $gene.tblastn -f ../transcriptome/GSE97888_Metatranscriptome_qualityfiltered.fasta -o $gene.nucl.hits -n qseqid sseqid pident length mismatch gapopen qstart qend sstart send sframe evalue bitscore
-  trimal -in $dir$gene.unique.aln -out $gene.ref.phy -phylip
+  singularity exec -B /local:/local /local/two/Software/PhyloMagnet/PhyloMagnet.simg trimal -in $dir$gene.unique.aln -out $gene.ref.phy -phylip
   singularity exec -B /local:/local /local/two/Software/PhyloMagnet/PhyloMagnet.simg papara -t $dir$gene.treefile -s $gene.ref.phy -q $gene.hits -a -n $gene -r
   trimal -in papara_alignment.$gene -out $gene.refquer.aln -fasta
   split_alignment $gene $dir

@@ -1,4 +1,7 @@
-Python script to download sra files from ENA and subsequently convert them to fastq files (basically taken from the template used in Phylomagnet)
+Download and prepare query datasets
+===============
+
+Python script to download sra files from ENA and subsequently convert them to FASTQ files (basically taken from the template used in PhyloMagnet)
 ```bash
 donwnload_fastq(){
   python3 <<<"""
@@ -24,7 +27,7 @@ with open('$1.sra', 'wb') as f:
 ```
 
 MBARC-26
-========
+--------
 Download MBARC-26 Illumina metagenomic dataset from ENA
 ```bash
 mkdir MBARC/fastq
@@ -39,7 +42,7 @@ seqtk sample -s11 <(gunzip -c SRR3656745.fastq.gz) 0.1 | pigz -9 > SRR3656745.10
 ```
 
 Tara Oceans
-===========
+---------
 Download Tara Oceans metagenomic data from ENA
 ```bash
 mkdir Tara_Southern_Ocean/fastq
@@ -51,8 +54,8 @@ done
 ```
 
 Coral Bleaching
-===============
-Download Coral Bleaching metatranscriptomic data from ENA
+--------------
+Download Coral Bleaching metatranscriptomic data from ENA, concatenate them to a single dataset.
 ```bash
 mkdir Tara_Southern_Ocean/fastq
 cd Tara_Southern_Ocean/fastq
