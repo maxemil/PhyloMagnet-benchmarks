@@ -1,4 +1,4 @@
-name: PhyloMagnet-0.6
+name: benchmark
 channels:
   - bioconda
   - conda-forge

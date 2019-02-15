@@ -1,0 +1,16 @@
+name: graftm
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - bioconda::krona=2.7
+  - bioconda::orfm=0.7.1
+  - bioconda::diamond=0.9.24
+  - bioconda::fasttree=2.1.10
+  - bioconda::hmmer=3.2.1
+  - bioconda::pplacer=1.1.alpha19
+  - bioconda::graftm=0.11.1
+  - conda-forge::h5py=2.9.0
+  - conda-forge::ocaml=4.06.1
+  - conda-forge::numpy=1.14.5

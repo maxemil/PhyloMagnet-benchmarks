@@ -1,7 +1,7 @@
 for gpkg in rp16_added_gpkg/*
 do
   base=$(basename ${gpkg%%.gpkg})
-  singularity exec -B $PWD:$PWD GraftM/graftM.img graftM graft \
+  singularity exec -B $PWD:$PWD graftM.simg graftM graft \
                                               --forward $1 \
                                               --graftm_package $gpkg \
                                               --input_sequence_type nucleotide \

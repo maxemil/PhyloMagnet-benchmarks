@@ -10,6 +10,9 @@ Bootstrap:docker
     PATH=/opt/conda/envs/benchmarks/bin:$PATH
     export PATH
 
+%files
+    environment.yml /
+
 %post
     apt-get update
     apt-get install -y procps libxtst6 pigz wget
