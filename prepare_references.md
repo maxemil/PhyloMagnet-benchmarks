@@ -128,8 +128,8 @@ cd chloroplast_references_uniprot
 
 for gene in "atpA" "atpB" "petB" "petD" "psaA" "psaB" "psbA" "psbB" "psbC" "psbD" "psbE" "psbI";
 do
-  wget \
-"https://www.uniprot.org/uniprot/?query=gene%3A$gene+(reviewed%3Ayes+OR+dinophyceae)+(chloroplast+OR+plastid)&format=fasta" \
+  wget "https://www.uniprot.org/uniprot/?query=gene%3A\
+  $gene+(reviewed%3Ayes+OR+dinophyceae)+(chloroplast+OR+plastid)&format=fasta" \
 -O "$gene.fasta"
 done
 clean_headers

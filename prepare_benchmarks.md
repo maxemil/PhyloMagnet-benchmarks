@@ -41,9 +41,10 @@ with open('$1.quer.aln', 'w') as out:
 ```
 Download the metatranscriptomic assembly from GEO database. prepare blast database
 ```bash
-wget https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE97888&format=file&file=GSE97888%5FMetatranscriptome%5Fqualityfiltered%2Efasta%2Egz
-gunzip GSE97888_Metatranscriptome_qualityfiltered.fasta.gz
-makeblastdb -in GSE97888_Metatranscriptome_qualityfiltered.fasta -out GSE97888_Metatranscriptome_qualityfiltered.db -dbtype nucl
+TRANSCRIPTOME_FILE=GSE97888%5FMetatranscriptome%5Fqualityfiltered%2Efasta%2Egz
+wget https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE97888&format=file&file=$TRANSCRIPTOME_FILE -O GSE97888.fasta.gz
+gunzip GSE97888.fasta.gz
+makeblastdb -in GSE97888.fasta -out GSE97888.db -dbtype nucl
 
 ```
 For each reference OG, identify homologous transcripts and place them onto the ref tree.
@@ -56,9 +57,9 @@ for dir in ../references/*/;
 do
   gene=${dir#../references/}
   gene=${gene%/}
-  tblastn -db ../transcriptome/GSE97888_Metatranscriptome_qualityfiltered.db -num_threads 30 -query $dir$gene.unique.fasta -evalue 1e-15 -outfmt '6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send sframe evalue bitscore' -out $gene.tblastn
-  python3 ../get_blast_hsp.py -b $gene.tblastn -f ../transcriptome/GSE97888_Metatranscriptome_qualityfiltered.fasta -o $gene.hits --translate -n qseqid sseqid pident length mismatch gapopen qstart qend sstart send sframe evalue bitscore
-  python3 ../get_blast_hsp.py -b $gene.tblastn -f ../transcriptome/GSE97888_Metatranscriptome_qualityfiltered.fasta -o $gene.nucl.hits -n qseqid sseqid pident length mismatch gapopen qstart qend sstart send sframe evalue bitscore
+  tblastn -db ../transcriptome/GSE97888.db -num_threads 30 -query $dir$gene.unique.fasta -evalue 1e-15 -outfmt '6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send sframe evalue bitscore' -out $gene.tblastn
+  python3 ../get_blast_hsp.py -b $gene.tblastn -f ../transcriptome/GSE97888.fasta -o $gene.hits --translate -n qseqid sseqid pident length mismatch gapopen qstart qend sstart send sframe evalue bitscore
+  python3 ../get_blast_hsp.py -b $gene.tblastn -f ../transcriptome/GSE97888.fasta -o $gene.nucl.hits -n qseqid sseqid pident length mismatch gapopen qstart qend sstart send sframe evalue bitscore
   singularity exec -B /local:/local ../../PhyloMagnet.simg trimal -in $dir$gene.unique.aln -out $gene.ref.phy -phylip
   singularity exec -B /local:/local ../../PhyloMagnet.simg papara -t $dir$gene.treefile -s $gene.ref.phy -q $gene.hits -a -n $gene -r
   singularity exec -B /local:/local ../../PhyloMagnet.simg epa-ng --split $gene.ref.phy papara_alignment.$gene

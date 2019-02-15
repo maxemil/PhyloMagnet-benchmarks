@@ -34,8 +34,7 @@ Fig 2:
 
 Fig 3:
 -----
-This figure is simply the heatmap taken from the ouput of the Tara oceans benchmark
-(`Tara_Southern_Ocean/queries/decision_heatmap.pdf`), added with a 'taxonomic tree' as it can be found on ncbi.
+This figure is simply the heatmap taken from the ouput of the Tara oceans benchmark, added with a 'taxonomic tree' as it can be found on ncbi. `Tara_Southern_Ocean/queries/decision_heatmap.pdf`
 
 Fig 4:
 -----

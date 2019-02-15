@@ -29,4 +29,10 @@
             --queries_dir queries
 
 
-            # --lineage "Clostridium","Ruminiclostridium","Coraliomargarita","Corynebacterium","Desulfosporosinus","Desulfotomaculum","Echinicola","Escherichia","Fervidobacterium","Frateuria","Halovivax","Hirschia","Meiothermus","Natronobacterium","Natronococcus","Nocardiopsis","Olsenella","Pseudomonas","Salmonella","Segniliparus","Sediminispirochaeta","Streptococcus","Terriglobus","Thermobacillus","Enterobacteriaceae" \
+# --lineage "Clostridium","Ruminiclostridium","Coraliomargarita",\
+#           "Corynebacterium","Desulfosporosinus","Desulfotomaculum",\
+#           "Echinicola","Escherichia","Fervidobacterium","Frateuria",\
+#           "Halovivax","Hirschia","Meiothermus","Natronobacterium",\
+#           "Natronococcus","Nocardiopsis","Olsenella","Pseudomonas",\
+#           "Salmonella","Segniliparus","Sediminispirochaeta","Streptococcus",\
+#           "Terriglobus","Thermobacillus","Enterobacteriaceae" \
