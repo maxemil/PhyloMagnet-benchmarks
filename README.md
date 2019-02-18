@@ -29,8 +29,10 @@ pandoc prepare_references.md \
         prepare_queries.md \
         prepare_benchmarks.md \
         benchmarks.md \
+        tables/TableS1.md \
+        tables/TableS2.md \
         bibliography.md \
         --listings -H pandoc-listings-setup.tex \
         --filter pandoc-include-code \
-        -o supplement.pdf
+        --toc -o supplement.pdf
 ```

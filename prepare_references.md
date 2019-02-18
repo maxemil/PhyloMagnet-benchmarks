@@ -5,6 +5,7 @@ Prepare initial rp16 references
 Download initial references from EggNOG and create multiple sequence alignments and trees. Save the reference packages in compressed form in `rp16_rpkg`.
 ```bash
 singularity pull --name PhyloMagnet.simg shub://maxemil/PhyloMagnet:latest
+singularity exec PhyloMagnet.simg python3 -c "import ete3; ncbi = ete3.NCBITaxa()"
 
 nextflow run maxemil/PhyloMagnet \
             -with-singularity  PhyloMagnet.simg \
@@ -25,7 +26,7 @@ mkdir rp16_hmms
 
 for cog in rp16_references/C*/COG*[0-9].unique.aln;
 do
-  hmmbuild rp16_hmms/$(basename ${cog%%.unique.aln}).hmm $cog;
+  singularity exec -B $PWD:$PWD benchmark.simg hmmbuild rp16_hmms/$(basename ${cog%%.unique.aln}).hmm $cog;
 done
 ```
 
@@ -58,7 +59,7 @@ mkdir rp16_added_fasta
 
 for hmm in rp16_hmms/COG*[0-9].hmm;
 do
-  hmmsearch -T 50 --tblout rp16_added_fasta/$(basename ${hmm%%.hmm}).out $hmm MBARC/genomes_relatives/all_proteomes.faa.gz;
+  singularity exec -B $PWD:$PWD benchmark.simg hmmsearch -T 50 --tblout rp16_added_fasta/$(basename ${hmm%%.hmm}).out $hmm MBARC/genomes_relatives/all_proteomes.faa.gz;
   grep -v "^#" rp16_added_fasta/$(basename ${hmm%%.hmm}).out | awk '{print $1}' | esl-sfetch -f MBARC/genomes_relatives/all_proteomes.faa.gz - > rp16_added_fasta/$(basename ${hmm%%.hmm}).hits.fasta ;
 done
 

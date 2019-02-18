@@ -45,8 +45,11 @@ Fig S1:
 
 ```{ .python include=FigS1.py}
 ```
+![Classification results of PhyloMagnet and GraftM on the full MBARC-26 dataset. Values and colors correspond to the number of rp16 trees a genus was identified in. Those genera that are part of the MBARC-26 community are written in bold.](figures/FigS1.pdf)
 
+\newpage{}
 Fig S2:
 -----
 ```{ .python include=FigS2.py}
 ```
+![Computational footprint of PhyloMagnet and GraftM for the complete MBARC-26 dataset (50Gb), the subsample of 1% (5Gb) and of 10% (0.5Gb). top: runtime on 10 CPUs. bottom: peak memory usage.](figures/FigS2.pdf)

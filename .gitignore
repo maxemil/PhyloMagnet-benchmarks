@@ -1,3 +1,4 @@
+*.simg
 .nextflow*
 *.html*
 work
