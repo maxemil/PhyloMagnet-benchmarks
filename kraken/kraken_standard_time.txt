@@ -1,0 +1,23 @@
+	Command being timed: "singularity exec -B /local/two/Software/PhyloMagnet-benchmarks/kraken kraken.sif kraken2 --db standard --gzip-compressed --use-names ../MBARC/fastq/SRR3656745.fastq.gz --threads 10 --output SRR3656745.out --report SRR3656745.report"
+	User time (seconds): 13649.47
+	System time (seconds): 243.18
+	Percent of CPU this job got: 780%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 29:40.94
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 13817456
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 62
+	Minor (reclaiming a frame) page faults: 78502200
+	Voluntary context switches: 4098081
+	Involuntary context switches: 27519
+	Swaps: 0
+	File system inputs: 11220
+	File system outputs: 94519800
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
