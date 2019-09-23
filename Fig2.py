@@ -15,6 +15,12 @@ MBARC_genera = ['Clostridium','Ruminiclostridium','Coraliomargarita',
     'Meiothermus','Natronobacterium','Natronococcus','Nocardiopsis',
     'Streptococcus','Terriglobus','Thermobacillus']
 
+MBARC_families = ['Acidobacteriaceae', 'Atopobiaceae', 'Clostridiaceae'
+    'Corynebacteriaceae', 'Cyclobacteriaceae', 'Enterobacteriaceae', 'Fervidobacteriaceae'
+    'Hyphomonadaceae', 'Natrialbaceae', 'Nocardiopsaceae', 'Paenibacillaceae'
+    'Peptococcaceae', 'Pseudomonadaceae', 'Puniceicoccaceae', 'Rhodanobacteraceae'
+    'Ruminococcaceae', 'Segniliparaceae', 'Spirochaetaceae', 'Streptococcaceae','Thermaceae']
+
 def get_counts_tree_taxon(df):
     taxa = set(df["Taxon"])
     samples = set(df["Tree"])
@@ -67,27 +73,47 @@ def get_counts_both_tools():
     graftm_10 = parse_graftM_results("GraftM_output_10perc")
     df = df.append(divide_tp_and_fp(graftm_10, 'GraftM 10%'))
     graftm = parse_graftM_results("GraftM_output")
-    df = df.append(divide_tp_and_fp(graftm, 'GraftM'))
+    df = df.append(divide_tp_and_fp(graftm, 'GraftM full'))
 
     counts_1 = parse_PhyloMagnet_results("MBARC/queries_1perc/tree_decisions.txt")
     df = df.append(divide_tp_and_fp(counts_1, 'PhyloMagnet 1%'))
     counts_10 = parse_PhyloMagnet_results("MBARC/queries_10perc/tree_decisions.txt")
     df = df.append(divide_tp_and_fp(counts_10, 'PhyloMagnet 10%'))
     counts = parse_PhyloMagnet_results("MBARC/queries/tree_decisions.txt")
-    df = df.append(divide_tp_and_fp(counts, 'PhyloMagnet'))
+    df = df.append(divide_tp_and_fp(counts, 'PhyloMagnet full'))
     return df
 
 def plot_counts_fp_tp(df):
+    fig, ax = plt.subplots(1,1)
+    # dummy plots, just to get the Path objects
+    a = ax.scatter([1,2],[3,4], marker='o')
+    b = ax.scatter([1,2],[3,4], marker='^')
+    circle_mk, = a.get_paths()
+    triangle_up_mk, = b.get_paths()
+    plt.close()
+
     clr_palette = [lighten_color(sns.xkcd_rgb['scarlet'], 0.7),
-                        sns.xkcd_rgb['scarlet'],
+                        lighten_color(sns.xkcd_rgb['scarlet'], 1),
                         lighten_color(sns.xkcd_rgb['scarlet'], 1.3),
                         lighten_color(sns.xkcd_rgb['denim'], 0.7),
-                        sns.xkcd_rgb['denim'],
+                        lighten_color(sns.xkcd_rgb['denim'], 1),
                         lighten_color(sns.xkcd_rgb['denim'], 1.3)]
+    markers = [triangle_up_mk, triangle_up_mk, triangle_up_mk, circle_mk, circle_mk, circle_mk]
+    clr2mrk = {int(c[0]*1000):m for c,m in zip(clr_palette, markers)}
 
     fig, ax = plt.subplots(figsize=(10,6), tight_layout=True)
     sns.swarmplot(x=df.index, y='counts', data=df, hue='tool',
                         ax=ax, palette=clr_palette, linewidth=0.4, size=6)
+    i = 0
+    for c in ax.collections:
+        if len(c.get_facecolors()) == 12:
+            paths = []
+            for f in c.get_facecolors():
+                paths.append(clr2mrk[int(f[0]*1000)])
+            c.set_paths(paths)
+        else:
+            c.set_paths([paths[i]])
+            i += 1
 
     ax.set_xticklabels(labels=df.index, rotation=90)
     ax.set_ylabel('True and False positive')

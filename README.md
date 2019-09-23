@@ -21,6 +21,8 @@ singularity exec -B $PWD:$PWD benchmark.simg prepare_benchmarks.sh
 python3 Fig2.py
 python3 FigS1.py
 python3 FigS2.py
+python3 FigS3.py
+python3 FigS4.py
 ```
 
 If you want to create a PDF with all the commands and comments:

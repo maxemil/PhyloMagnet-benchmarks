@@ -108,7 +108,6 @@ clean_headers(){
 from Bio import SeqIO
 import re
 
-re.compile('OX=[0-9]*')
 pattern = re.compile('OX=[0-9]*')
 
 for gene in ['atpA', 'atpB', 'petB', 'petD', 'psaA', 'psaB', 'psbA', 'psbB', 'psbC', 'psbD', 'psbE', 'psbI']:
